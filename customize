@@ -1,0 +1,48 @@
+#!/usr/bin/bash
+#
+# Put customizations to your image in this file.
+
+PATH=/opt/local/gnu/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin
+
+# Munin plugins
+MUNIN_PLUGINS="
+"
+
+# Exit if any commands fail
+set -o errexit
+
+echo "* Activate munin plugins"
+/opt/qutic/bin/munin-node-plugins ${MUNIN_PLUGINS}
+
+echo "* Setup pgsql data-path"
+mkdir -p /var/pgsql/data
+chown postgres:postgres /var/pgsql/data
+mkdir -p /var/log/postgresql
+chown postgres:postgres /var/log/postgresql
+# allow postgres login
+sed -i \
+    's#postgres:x:907:907:PostgreSQL database administrator:/var/pgsql:/usr/bin/false#postgres:x:907:907:PostgreSQL database administrator:/var/pgsql:/usr/bin/bash#' \
+    /etc/passwd
+# su - postgres -c '/opt/local/bin/initdb -D /var/pgsql/data'
+# setup log path
+sed -i \
+  's#/var/log/postgresql.log#/var/log/postgresql/postgresql.log#' \
+    /opt/local/lib/svc/manifest/postgresql.xml
+svccfg import /opt/local/lib/svc/manifest/postgresql.xml
+# link config files into config
+ln -nfs /var/pgsql/data/pg_hba.conf /opt/local/etc/postgresql/pg_hba.conf
+ln -nfs /var/pgsql/data/pg_ident.conf /opt/local/etc/postgresql/pg_ident.conf
+ln -nfs /var/pgsql/data/postgresql.conf /opt/local/etc/postgresql/postgresql.conf
+
+echo "* Setup postgresql path"
+mkdir -p /var/backups/postgresql
+chmod 0750 /var/backups/postgresql
+chown postgres:postgres /var/backups/postgresql
+echo "0 1 * * * /usr/local/bin/psql_backup" > /var/spool/cron/crontabs/postgres
+chown postgres:crontab /var/spool/cron/crontabs/postgres
+
+echo "* Cleaning up"
+rm /root/customize
+cp /etc/skel/.bashrc /root/.bashrc
+
+sm-prepare-image -y

@@ -1,0 +1,5 @@
+# List packages to add to your image one per line.
+# postgresql11-server-11.2 postgresql11-docs-11.2 postgresql11-client-11.2 mit-krb5-1.16.2 postgresql11-11.2nb1
+postgresql11
+postgresql11-contrib
+postgresql11-pg_top
