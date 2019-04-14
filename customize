@@ -39,7 +39,7 @@ mkdir -p /var/backups/postgresql
 chmod 0750 /var/backups/postgresql
 chown postgres:postgres /var/backups/postgresql
 echo "0 1 * * * /usr/local/bin/psql_backup" > /var/spool/cron/crontabs/postgres
-chown postgres:crontab /var/spool/cron/crontabs/postgres
+chown root:postgres /var/spool/cron/crontabs/postgres
 
 echo "* Cleaning up"
 rm /root/customize
