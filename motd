@@ -5,5 +5,5 @@
  | (_| || |_| || |_ | || (__    %brand% (%name% %version%)
   \__, | \__,_| \__||_| \___|   %homepage%
      | |                     
-     |_|      run mysql_secure_installation on first login!
+     |_|
 
