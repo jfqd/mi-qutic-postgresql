@@ -34,7 +34,9 @@ gsed -i "/^max_connections/s/max_connections.*/max_connections = ${MAX_CONNECTIO
 gsed -i "/^#work_mem/s/#work_mem.*/work_mem = 1MB/" /var/pgsql/data/postgresql.conf
 gsed -i "/^#maintenance_work_mem/s/#maintenance_work_mem.*/maintenance_work_mem = ${MAINTENANCE_WORK_MEM}/" /var/pgsql/data/postgresql.conf
 gsed -i "/^#listen_addresses/s/#listen_addresses.*/listen_addresses = '${IP_INTERNAL}'/" /var/pgsql/data/postgresql.conf
+
 echo "host    all             all             ${IP_INTERNAL}/32         password" >> /var/pgsql/data/pg_hba.conf
+echo "local   all             postgres                                peer" >> /var/pgsql/data/pg_hba.conf
 
 log "starting PostgreSQL"
 svcadm enable -s postgresql
