@@ -16,7 +16,7 @@ echo "* Activate munin plugins"
 
 echo "* Setup pgsql data-path"
 mkdir -p /var/pgsql/data
-chown postgres:postgres /var/pgsql/data
+chown -R postgres:postgres /var/pgsql
 mkdir -p /var/log/postgresql
 chown postgres:postgres /var/log/postgresql
 # allow postgres login
