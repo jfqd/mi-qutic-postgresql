@@ -38,7 +38,7 @@ echo "* Setup postgresql path"
 mkdir -p /var/backups/postgresql
 chmod 0750 /var/backups/postgresql
 chown postgres:postgres /var/backups/postgresql
-echo "0 1 * * * /usr/local/bin/psql_backup" > /var/spool/cron/crontabs/postgres
+echo "0 1 * * * /opt/qutic/bin/psql_backup" > /var/spool/cron/crontabs/postgres
 chown root:postgres /var/spool/cron/crontabs/postgres
 
 echo "* Cleaning up"
